@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { CursorGlow } from "@/components/ui/cursor-glow";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,9 +16,30 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://duane.co.za"),
   title: "Duane Cilliers — Maker",
   description:
-    "Full-stack developer and maker based in Cape Town, South Africa",
+    "Full-stack developer and maker based in Cape Town. Building REPE, shipping code, making things.",
+  keywords: [
+    "developer",
+    "maker",
+    "full-stack",
+    "Cape Town",
+    "Next.js",
+    "React",
+    "TypeScript",
+  ],
+  openGraph: {
+    title: "Duane Cilliers — Maker",
+    description:
+      "Full-stack developer and maker based in Cape Town. Building REPE, shipping code, making things.",
+    url: "https://duane.co.za",
+    siteName: "Duane Cilliers",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({
@@ -36,6 +58,7 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
+          <CursorGlow />
           {children}
         </ThemeProvider>
       </body>

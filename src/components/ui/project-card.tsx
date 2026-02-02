@@ -47,7 +47,7 @@ export function ProjectCard({ project, variant = "featured" }: ProjectCardProps)
     <motion.div
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className={`group rounded-lg border border-border/50 bg-card transition-colors hover:border-accent-brand/30 ${
+      className={`group rounded-lg border border-border/50 bg-card transition-all duration-200 hover:border-accent-brand/30 hover:shadow-lg hover:shadow-accent-brand/5 ${
         isFeatured ? "p-6" : "p-5"
       }`}
     >

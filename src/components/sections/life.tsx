@@ -34,7 +34,7 @@ export function Life() {
             variants={card}
             whileHover={{ scale: 1.05, y: -4 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="rounded-lg border border-border/50 bg-card/50 p-5 text-center transition-colors hover:border-accent-brand/30"
+            className="rounded-lg border border-border/50 bg-card/50 p-5 text-center transition-all duration-200 hover:border-accent-brand/30 hover:shadow-lg hover:shadow-accent-brand/5"
           >
             <span className="mb-2 block text-3xl">{hobby.emoji}</span>
             <h4 className="font-semibold">{hobby.name}</h4>
