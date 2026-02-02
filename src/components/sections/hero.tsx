@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Github, Linkedin, Twitter } from "lucide-react";
 import { siteData } from "@/data/site";
+import { SpotifyWidget } from "@/components/widgets/spotify";
+import { GitHubWidget } from "@/components/widgets/github";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   github: Github,
@@ -72,12 +74,21 @@ export function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.name}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 text-muted-foreground transition-colors hover:border-accent-brand/40 hover:text-accent-brand"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 text-muted-foreground transition-colors duration-200 hover:border-accent-brand/40 hover:text-accent-brand"
               >
                 {Icon ? <Icon className="h-5 w-5" /> : social.name}
               </a>
             );
           })}
+        </motion.div>
+
+        {/* Widgets */}
+        <motion.div
+          variants={item}
+          className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-start"
+        >
+          <SpotifyWidget />
+          <GitHubWidget />
         </motion.div>
       </motion.div>
     </section>
