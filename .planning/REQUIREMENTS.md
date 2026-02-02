@@ -78,7 +78,40 @@
 
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
-| (populated by roadmap) | | |
+| NAV-01 | Phase 1 | Pending |
+| NAV-02 | Phase 1 | Pending |
+| NAV-03 | Phase 1 | Pending |
+| NAV-04 | Phase 1 | Pending |
+| INFRA-01 | Phase 1 | Pending |
+| INFRA-02 | Phase 1 | Pending |
+| INFRA-03 | Phase 1 | Pending |
+| INFRA-04 | Phase 1 | Pending |
+| HERO-01 | Phase 2 | Pending |
+| HERO-02 | Phase 2 | Pending |
+| NOW-01 | Phase 2 | Pending |
+| NOW-02 | Phase 2 | Pending |
+| PROJ-01 | Phase 2 | Pending |
+| PROJ-02 | Phase 2 | Pending |
+| PROJ-03 | Phase 2 | Pending |
+| PROJ-04 | Phase 2 | Pending |
+| ABOUT-01 | Phase 2 | Pending |
+| ABOUT-02 | Phase 2 | Pending |
+| LIFE-01 | Phase 2 | Pending |
+| LIFE-02 | Phase 2 | Pending |
+| CTA-01 | Phase 2 | Pending |
+| CTA-02 | Phase 2 | Pending |
+| CTA-03 | Phase 2 | Pending |
+| HERO-03 | Phase 3 | Pending |
+| WIDGET-01 | Phase 3 | Pending |
+| WIDGET-02 | Phase 3 | Pending |
+| ANIM-01 | Phase 3 | Pending |
+| ANIM-02 | Phase 3 | Pending |
+| ANIM-03 | Phase 3 | Pending |
+| SEO-01 | Phase 3 | Pending |
+| SEO-02 | Phase 3 | Pending |
+| SEO-03 | Phase 3 | Pending |
+
+Coverage: 32/32 requirements mapped ✓
 
 ---
 *Last updated: 2026-02-02*
