@@ -6,9 +6,9 @@ Three-phase build: scaffold the Next.js project with layout and navigation, popu
 
 ## Phases
 
-- [ ] **Phase 1: Foundation** — Next.js 15 project, layout shell, navigation, dark/light mode, responsive
-- [ ] **Phase 2: Content Sections** — Hero, Now, Projects, About, Life, Contact — all with dummy content
-- [ ] **Phase 3: Widgets & Polish** — Spotify, GitHub, cursor glow, animations, SEO, OG images
+- [x] **Phase 1: Foundation** — Next.js 16 project, layout shell, navigation, dark/light mode, responsive
+- [x] **Phase 2: Content Sections** — Hero, Now, Projects, About, Life, Contact — all with real content
+- [x] **Phase 3: Widgets & Polish** — Spotify, GitHub, cursor glow, animations, SEO, OG images
 
 ## Phase Details
 
@@ -67,6 +67,6 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
-| 1. Foundation | 0/2 | Not started | - |
-| 2. Content Sections | 0/3 | Not started | - |
-| 3. Widgets & Polish | 0/3 | Not started | - |
+| 1. Foundation | 2/2 | Complete | 2026-02-02 |
+| 2. Content Sections | 3/3 | Complete | 2026-02-02 |
+| 3. Widgets & Polish | 3/3 | Complete | 2026-02-02 |
