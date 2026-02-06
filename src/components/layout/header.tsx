@@ -2,12 +2,16 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { siteData } from "@/data/site";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Header() {
   const [activeSection, setActiveSection] = useState<string>("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
 
   const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
     const visible = entries
@@ -24,14 +28,16 @@ export function Header() {
   }, []);
 
   useEffect(() => {
+    if (!isHomePage) return;
+
     const observer = new IntersectionObserver(handleIntersection, {
       rootMargin: "-80px 0px -60% 0px",
       threshold: 0,
     });
 
-    const sectionIds = siteData.nav.map((item) =>
-      item.href.replace("#", "")
-    );
+    const sectionIds = siteData.nav
+      .filter((item) => item.href.startsWith("#"))
+      .map((item) => item.href.replace("#", ""));
 
     sectionIds.forEach((id) => {
       const el = document.getElementById(id);
@@ -39,15 +45,25 @@ export function Header() {
     });
 
     return () => observer.disconnect();
-  }, [handleIntersection]);
+  }, [handleIntersection, isHomePage]);
 
   const handleNavClick = (href: string) => {
     setMobileMenuOpen(false);
-    const id = href.replace("#", "");
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+    if (href.startsWith("#")) {
+      const id = href.replace("#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
     }
+  };
+
+  const isAnchorLink = (href: string) => href.startsWith("#");
+  const isActiveLink = (href: string) => {
+    if (isAnchorLink(href)) {
+      return isHomePage && activeSection === href.replace("#", "");
+    }
+    return pathname.startsWith(href);
   };
 
   return (
@@ -68,12 +84,35 @@ export function Header() {
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-1 md:flex">
           {siteData.nav.map((item) => {
-            const sectionId = item.href.replace("#", "");
-            const isActive = activeSection === sectionId;
+            const isActive = isActiveLink(item.href);
+            const isAnchor = isAnchorLink(item.href);
+
+            if (isAnchor) {
+              return (
+                <button
+                  key={item.href}
+                  onClick={() => handleNavClick(item.href)}
+                  className="relative px-3 py-2 text-sm transition-colors hover:text-foreground"
+                  style={{
+                    color: isActive ? "var(--foreground)" : "var(--muted-foreground)",
+                  }}
+                >
+                  {item.label}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeNav"
+                      className="absolute inset-x-1 -bottom-[1px] h-px bg-accent-brand"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </button>
+              );
+            }
+
             return (
-              <button
+              <Link
                 key={item.href}
-                onClick={() => handleNavClick(item.href)}
+                href={item.href}
                 className="relative px-3 py-2 text-sm transition-colors hover:text-foreground"
                 style={{
                   color: isActive ? "var(--foreground)" : "var(--muted-foreground)",
@@ -87,7 +126,7 @@ export function Header() {
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-              </button>
+              </Link>
             );
           })}
           <div className="ml-2 border-l border-border pl-2">
@@ -141,12 +180,31 @@ export function Header() {
           >
             <div className="flex flex-col gap-1 px-4 py-3">
               {siteData.nav.map((item) => {
-                const sectionId = item.href.replace("#", "");
-                const isActive = activeSection === sectionId;
+                const isActive = isActiveLink(item.href);
+                const isAnchor = isAnchorLink(item.href);
+
+                if (isAnchor) {
+                  return (
+                    <button
+                      key={item.href}
+                      onClick={() => handleNavClick(item.href)}
+                      className="rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-accent"
+                      style={{
+                        color: isActive
+                          ? "var(--accent-brand)"
+                          : "var(--muted-foreground)",
+                      }}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                }
+
                 return (
-                  <button
+                  <Link
                     key={item.href}
-                    onClick={() => handleNavClick(item.href)}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
                     className="rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-accent"
                     style={{
                       color: isActive
@@ -155,7 +213,7 @@ export function Header() {
                     }}
                   >
                     {item.label}
-                  </button>
+                  </Link>
                 );
               })}
             </div>

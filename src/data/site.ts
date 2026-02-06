@@ -140,6 +140,7 @@ export const siteData = {
     { label: "About", href: "#about" },
     { label: "Now", href: "#now" },
     { label: "Projects", href: "#projects" },
+    { label: "Blog", href: "/blog" },
     { label: "Life", href: "#life" },
     { label: "Contact", href: "#contact" },
   ] as NavItem[],

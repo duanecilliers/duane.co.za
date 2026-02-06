@@ -4,8 +4,10 @@ import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Now } from "@/components/sections/now";
 import { Projects } from "@/components/sections/projects";
+import { Blog } from "@/components/sections/blog";
 import { Life } from "@/components/sections/life";
 import { Contact } from "@/components/sections/contact";
+import { posts } from "#site/content";
 
 export default function Home() {
   return (
@@ -16,6 +18,7 @@ export default function Home() {
         <About />
         <Now />
         <Projects />
+        <Blog posts={posts} />
         <Life />
         <Contact />
       </main>
