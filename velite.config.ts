@@ -2,7 +2,6 @@ import { defineConfig, defineCollection, s } from "velite";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
-import { resolve } from "path";
 
 const computedFields = <T extends { slug: string }>(data: T) => ({
   ...data,
@@ -26,7 +25,7 @@ const posts = defineCollection({
 });
 
 export default defineConfig({
-  root: resolve(process.env.HOME || "~", "brain/projects/duane.co.za"),
+  root: "content",
   output: {
     data: ".velite",
     assets: "public/static",

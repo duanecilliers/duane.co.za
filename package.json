@@ -10,7 +10,8 @@
     "build:next": "next build",
     "build": "run-s build:velite build:next",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync-blog": "bash scripts/sync-blog.sh"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
