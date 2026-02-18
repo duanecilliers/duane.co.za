@@ -40,7 +40,7 @@ export const siteData = {
       },
       {
         name: "LinkedIn",
-        url: "https://linkedin.com/in/duanecilliers",
+        url: "https://www.linkedin.com/in/duane-cilliers-34665915/",
         icon: "linkedin",
       },
       {
