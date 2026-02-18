@@ -62,6 +62,16 @@ export const siteData = {
   projects: {
     featured: [
       {
+        title: "Pomodorino",
+        description:
+          "A minimal Pomodoro timer for your menu bar. Native Swift, local analytics, no bloat. The timer for people who tried the others and got annoyed.",
+        tech: ["Swift", "macOS", "SwiftUI"],
+        url: "https://github.com/duanecilliers/Pomodorino",
+        github: "https://github.com/duanecilliers/Pomodorino",
+        status: "shipped" as const,
+        featured: true,
+      },
+      {
         title: "TubeMind",
         description:
           "Chat with a YouTube creator's AI persona. Built from video transcripts, embeddings, and conversational AI.",
