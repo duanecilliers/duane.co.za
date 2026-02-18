@@ -53,22 +53,14 @@ export const siteData = {
   now: {
     updated: "February 2026",
     items: [
-      "Building REPE — AI virtual staging for real estate agents",
       "Freelancing with REW and Trust My Group",
+      "Building side projects and exploring product ideas",
       "Learning the business side of shipping products",
       "Trying to practice drums more consistently",
     ],
   },
   projects: {
     featured: [
-      {
-        title: "REPE",
-        description:
-          "AI-powered virtual staging and photo enhancement for real estate listings. Turning empty rooms into furnished showcases.",
-        tech: ["TypeScript", "Next.js", "AI/ML", "Python"],
-        status: "active" as const,
-        featured: true,
-      },
       {
         title: "TubeMind",
         description:
@@ -104,7 +96,7 @@ export const siteData = {
   about: {
     paragraphs: [
       "I started as a frontend developer, spent years at a proptech startup, then went freelance. Now I'm building my own products while keeping the freelance engine running.",
-      "My days split between client work — building full-stack web apps with TypeScript, Next.js, React, and Laravel — and REPE, an AI staging tool I'm building for real estate agents with my dad.",
+      "My days split between client work — building full-stack web apps with TypeScript, Next.js, React, and Laravel — and side projects exploring AI and developer tools.",
       "I think in systems, ship in iterations, and believe the best products come from people who actually use them. Currently on the dev→entrepreneur arc, figuring it out as I go.",
     ],
   },
