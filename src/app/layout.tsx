@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import { JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CursorGlow } from "@/components/ui/cursor-glow";
+import { Analytics } from "@/components/analytics";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://duane.co.za"),
   title: "Duane Cilliers — Maker",
   description:
-    "Full-stack developer and maker based in Cape Town. Building REPE, shipping code, making things.",
+    "Full-stack developer and maker based in Cape Town. Shipping code, making things.",
   keywords: [
     "developer",
     "maker",
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Duane Cilliers — Maker",
     description:
-      "Full-stack developer and maker based in Cape Town. Building REPE, shipping code, making things.",
+      "Full-stack developer and maker based in Cape Town. Shipping code, making things.",
     url: "https://duane.co.za",
     siteName: "Duane Cilliers",
     type: "website",
@@ -52,6 +53,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
+        <Analytics />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
