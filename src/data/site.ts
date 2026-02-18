@@ -134,6 +134,5 @@ export const siteData = {
     { label: "Projects", href: "#projects" },
     { label: "Blog", href: "/blog" },
     { label: "Life", href: "#life" },
-    { label: "Contact", href: "#contact" },
   ] as NavItem[],
 };
