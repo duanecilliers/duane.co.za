@@ -1,13 +1,10 @@
+# Securing OpenClaw Secrets with macOS Keychain
+
+*How I moved 21 plaintext tokens out of my config file and into the system keychain.*
+
 ---
-title: Securing OpenClaw Secrets with macOS Keychain
-description: How I moved 21 plaintext tokens out of my config file and into the system keychain.
-date: 2026-02-07
-published: true
-tags:
-  - openclaw
-  - security
-  - macos
----
+
+## The Problem
 
 I run [OpenClaw](https://openclaw.ai) with 13 AI agents, each with their own Discord bot. That's 14 Discord tokens, a Telegram token, API keys for Brave Search, Google Places, Gemini — 21 secrets total. All sitting in `~/.openclaw/openclaw.json` in plaintext.
 
@@ -170,3 +167,9 @@ Absolutely. 30 minutes of work for:
 - Secrets locked when I step away
 - No dependency on 1Password being open
 - Clean separation of config vs. credentials
+
+The remaining security gaps (agent isolation, tool policies) need upstream OpenClaw features. But secrets management? Solved.
+
+---
+
+*Written while my 13 AI agents watched silently from their Discord channels, tokens safely tucked away in the keychain.*

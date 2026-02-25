@@ -1,83 +1,118 @@
+# Sharing Localhost with Tailscale Funnel
+
+> Expose local dev servers with secure, public HTTPS URLs — no ngrok, no port forwarding.
+
+## The Problem
+
+You're running a dev server locally and need to:
+- Show a client a quick preview
+- Test on your phone
+- Share with a teammate
+
+Traditional options suck: ngrok tokens, Cloudflare tunnel configs, or punching holes in your router.
+
+## The Solution: Tailscale Funnel
+
+Tailscale Funnel gives you a public HTTPS URL that proxies to your local port. One command.
+
 ---
-title: Sharing Localhost With the World Using Tailscale Funnel
-description: How I stopped wrestling with ngrok and started using Tailscale to share local dev servers with clients.
-date: 2026-02-05
-published: true
-tags:
-  - devtools
-  - networking
-  - tailscale
----
 
-You're building something locally. A client wants to see it. You could deploy to a staging environment, wait for CI, hope nothing breaks. Or you could just... share your localhost.
+## Setup (macOS)
 
-I've been using Tailscale Funnel for this lately, and it's become one of those tools I wish I'd found earlier.
+### 1. Install the Mac App
 
-## The Problem With Sharing Local Work
+Download from [tailscale.com](https://tailscale.com/download/mac) or the App Store.
 
-We've all been there. You're iterating on a feature, the client wants a preview, and you've got three options:
+⚠️ **Use ONLY the Mac app** — don't also install via Homebrew. They use different sockets and won't talk to each other.
 
-1. **Deploy to staging** — Slow. Requires pushing, waiting for CI, and hoping your half-finished branch doesn't break something.
-2. **Screen share** — Works, but the client can't poke around themselves. And timezones are a thing.
-3. **ngrok/localtunnel** — Fine, but ngrok's free tier is slow, URLs change constantly, and there's something unsettling about routing traffic through infrastructure you don't control.
-
-Tailscale Funnel is option four: expose your local server to the public internet through your own Tailscale network, with automatic HTTPS, stable URLs, and a single command to turn it on or off.
-
-## What's Tailscale?
-
-Quick primer if you haven't used it: Tailscale is a mesh VPN built on WireGuard. Every device gets a stable IP address that works regardless of NAT, firewalls, or network changes. No port forwarding. No exposed services. End-to-end encryption.
-
-I use it primarily to SSH into my Mac from anywhere without exposing port 22 to the internet. But the Funnel feature is what makes it useful for sharing work.
-
-## Serve vs Funnel
-
-Tailscale has two related features:
-
-**Serve** exposes a local port to your Tailnet (your private network of devices). Only you and your devices can access it.
-
-**Funnel** takes that a step further — it makes the service publicly accessible on the internet. Anyone with the link can access it.
-
-| | Serve | Funnel |
-|---|-------|--------|
-| Audience | Your devices only | Public internet |
-| Auth | Handled by Tailscale | None (or your app's auth) |
-| Use case | Internal access | Client demos |
-
-## Setting It Up
-
-Install Tailscale if you haven't:
+### 2. Open and Sign In
 
 ```bash
-brew install tailscale
+open -a Tailscale
 ```
 
-Or grab the Mac app from [tailscale.com](https://tailscale.com) — it includes a menu bar UI.
+Click the menu bar icon → **Log in**. Authenticate with Google/GitHub/etc.
 
-Before using Funnel, enable MagicDNS in your [Tailscale Admin Console](https://login.tailscale.com/admin/dns). Funnel should auto-enable, but check Access Controls if it doesn't.
+### 3. Set Up the CLI Alias
 
-## Basic Usage
-
-Say you're running a Next.js dev server on port 3000:
+The Mac app bundles its own CLI, but it's buried at `/Applications/Tailscale.app/Contents/MacOS/Tailscale`. Add an alias to your shell config:
 
 ```bash
-# Start your dev server (bind to 0.0.0.0, not localhost)
-pnpm dev --hostname 0.0.0.0
+# Add to your aliases file (adjust path to your setup)
+echo 'alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"' >> ~/.config/zsh/.aliases
+source ~/.config/zsh/.aliases
+```
 
-# Expose it publicly
+Without this alias, you'd need the full path every time:
+```bash
+/Applications/Tailscale.app/Contents/MacOS/Tailscale funnel 3000
+```
+
+### 4. Authenticate the CLI
+
+Even with the app signed in, the CLI may need separate auth:
+
+```bash
+tailscale up
+```
+
+Opens browser to sign in. After this, both app and CLI are connected.
+
+### 5. Verify Connection
+
+```bash
+tailscale status
+```
+
+Should show your machine with a `100.x.x.x` IP:
+```
+100.x.x.x  your-machine-name  you@domain.com  macOS  -
+```
+
+### 6. Enable MagicDNS (Admin Console)
+
+1. Go to [login.tailscale.com/admin/dns](https://login.tailscale.com/admin/dns)
+2. Enable **MagicDNS** if not already on
+3. Funnel should auto-enable under Access Controls
+
+---
+
+## Usage
+
+### Expose a Port
+
+```bash
+# Start your dev server (must bind to 0.0.0.0!)
+next dev -H 0.0.0.0 -p 3000
+
+# In another terminal, expose it
 tailscale funnel 3000
 ```
 
-You'll get a URL like `https://duanes-macbook.tailnet-abc123.ts.net/`. Send that to your client. They open it. Done.
+You'll get a URL like:
+```
+https://your-machine-name.tailnet-xxxx.ts.net/
+```
 
-To stop:
+Send that to anyone. Works from anywhere.
+
+### Stop Funnel
 
 ```bash
 tailscale funnel off
 ```
 
-### The 0.0.0.0 Thing
+### Check Status
 
-This trips people up. Dev servers typically bind to `127.0.0.1` by default, which rejects non-localhost connections. You need to bind to `0.0.0.0`:
+```bash
+tailscale serve status
+```
+
+---
+
+## Important: Bind to 0.0.0.0
+
+Dev servers default to `127.0.0.1`, which rejects non-localhost connections. You must bind to all interfaces:
 
 ```bash
 # Next.js
@@ -85,11 +120,16 @@ next dev -H 0.0.0.0
 
 # Vite
 vite --host 0.0.0.0
+
+# Generic npm scripts
+pnpm dev --host 0.0.0.0
 ```
 
-## Multiple Apps, One Machine
+---
 
-If you're running multiple services, you can expose them on different ports:
+## Multiple Apps
+
+### Port-Based (Recommended)
 
 ```bash
 tailscale serve --https=443 http://localhost:3000
@@ -99,51 +139,115 @@ tailscale funnel 443 on
 tailscale funnel 8443 on
 ```
 
-This gives you:
+URLs:
 - `https://your-machine.tailnet.ts.net/`
 - `https://your-machine.tailnet.ts.net:8443/`
 
-Path-based routing is also possible, but it tends to break apps that assume they're at root.
+### Path-Based
+
+```bash
+tailscale serve --set-path=/app1 http://localhost:3000
+tailscale serve --set-path=/app2 http://localhost:3001
+tailscale funnel 443 on
+```
+
+Note: Path-based can break apps that assume they're at root.
+
+---
+
+## Troubleshooting
+
+### "failed to connect to local Tailscale service"
+
+The CLI can't reach the daemon. Causes:
+
+1. **Tailscale app not running:**
+   ```bash
+   open -a Tailscale
+   ```
+
+2. **Using wrong CLI** — If you previously installed via Homebrew, that CLI won't work with the Mac app. Remove it:
+   ```bash
+   brew uninstall tailscale
+   brew services stop tailscale
+   ```
+   Then use the Mac app's bundled CLI (via alias or full path).
+
+### "logged out"
+
+The CLI needs authentication even if the app is signed in:
+```bash
+tailscale up
+```
+
+Opens browser to sign in.
+
+### Funnel returns nothing / connection refused
+
+- Check something's actually running on that port: `lsof -i :3000`
+- Ensure it's bound to `0.0.0.0`, not `127.0.0.1`
+
+### App hanging on login
+
+Force quit and retry:
+```bash
+pkill -9 Tailscale
+open -a Tailscale
+```
+
+---
+
+## Performance Notes
+
+Funnel routes through Tailscale's DERP relay servers. Expect some latency compared to localhost.
+
+- Nearest DERP relay: ~30-50ms baseline typical
+- Real-world page loads: noticeably slower than local, but usable for demos
+- For local-network-only testing, use `tailscale serve 3000` instead (Tailnet only, faster)
+
+Check your nearest relay:
+```bash
+tailscale netcheck
+```
+
+If experiencing extreme slowness (30s+), debug with:
+```bash
+curl -w "DNS: %{time_namelookup}s\nConnect: %{time_connect}s\nTLS: %{time_appconnect}s\nTTFB: %{time_starttransfer}s\nTotal: %{time_total}s\n" -o /dev/null -s https://YOUR-FUNNEL-URL
+```
+
+---
 
 ## Security Notes
 
-Funnel handles the transport layer well:
-- Automatic TLS with valid certificates
-- No exposed ports on your router  
-- DDoS protection at Tailscale's edge
-- One command to turn it off
+- **Funnel = public** — anyone with the URL can access
+- TLS is automatic and valid
+- Don't expose sensitive data or leave it running
+- Kill it when done: `tailscale funnel off`
 
-But it doesn't protect your application. If your app has vulnerabilities, they're exposed. And there's no built-in auth gate — anyone with the URL can access it.
+---
 
-My rules:
-- Don't leave Funnel running when you're not actively demoing
-- Don't expose anything with real user data
-- Kill it when the demo's done
-
-For ongoing internal access, use Serve instead — it stays within your Tailnet.
-
-## Compared to Alternatives
-
-| | Funnel | ngrok | Cloudflare Tunnel |
-|---|--------|-------|-------------------|
-| Speed | Fast | Slow on free tier | Fast |
-| URL stability | Stable | Changes constantly | Stable |
-| Trust model | Your Tailnet | ngrok's infra | Cloudflare's infra |
-
-Funnel wins for me because I already use Tailscale for other things, and I prefer keeping traffic within infrastructure I control.
-
-## The Workflow
-
-When I'm building something and need to share it:
+## Quick Reference
 
 ```bash
-cd ~/projects/client-demo
-pnpm dev --host 0.0.0.0 --port 3000
+# Expose port
 tailscale funnel 3000
+
+# Stop
+tailscale funnel off
+
+# Check what's exposed
+tailscale serve status
+
+# Reset everything
+tailscale serve reset
+
+# Connection status
+tailscale status
+
+# Network diagnostics
+tailscale netcheck
 ```
 
-Copy the URL, send it to the client, get feedback in real-time. No deploys. No waiting.
+---
 
-When we're done: `tailscale funnel off`.
-
-It's one of those small workflow improvements that adds up over time. Less friction between "it works on my machine" and "here, take a look."
+*Tested on macOS with the Tailscale Mac app — 2026-02-05*
