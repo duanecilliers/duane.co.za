@@ -310,3 +310,47 @@ After running this for a few weeks:
 - **Semantic search** — Using embeddings to let agents query the vault naturally ("what did we decide about auth?")
 - **Cross-agent messaging** — Agents directly notifying each other when relevant work completes
 - **Memory compaction** — Auto-summarizing old daily logs to keep context windows manageable
+
+## Bootstrap Prompt
+
+Want to set up this system for your own OpenClaw agents? Copy this prompt and send it to your main agent:
+
+```
+Set up a shared memory architecture for my OpenClaw agents:
+
+1. **Create shared Obsidian vault structure:**
+   - ~/brain/agents/daily/ — for compiled daily summaries
+   - ~/brain/projects/ — shared project context
+   - ~/brain/research/ — research findings
+   - ~/brain/Todos.md — shared task list
+
+2. **For each agent workspace (~/.openclaw/agents/*/workspace/):**
+   - Create memory/ directory if it doesn't exist
+   - Add "Daily Logging" section to SOUL.md with instructions to log significant activity to memory/YYYY-MM-DD.md
+
+3. **Set up a nightly summary cron job:**
+   - Schedule: 9pm daily (adjust timezone)
+   - Task: Read each agent's memory/YYYY-MM-DD.md, compile into ~/brain/agents/daily/YYYY-MM-DD.md
+   - Skip agents with no activity
+   - Notify a channel when complete
+
+4. **Daily logging instructions to add to each SOUL.md:**
+
+---
+
+## Daily Logging
+
+Log significant activity to `memory/YYYY-MM-DD.md` in your workspace. Include:
+- Tasks completed
+- Key decisions or insights  
+- Issues encountered
+- Anything noteworthy
+
+This feeds into the nightly agent summary.
+
+---
+
+Show me the agents you find and confirm when setup is complete.
+```
+
+The agent will scan your existing agents, create the directory structure, update SOUL files, and set up the cron job. You can customize the shared vault location and summary schedule to fit your workflow.
