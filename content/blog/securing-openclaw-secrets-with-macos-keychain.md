@@ -1,3 +1,14 @@
+---
+title: Securing OpenClaw Secrets with macOS Keychain
+description: How I moved 21 plaintext tokens out of my config file and into the system keychain.
+date: 2026-02-07
+published: true
+tags:
+  - openclaw
+  - security
+  - macos
+---
+
 # Securing OpenClaw Secrets with macOS Keychain
 
 *How I moved 21 plaintext tokens out of my config file and into the system keychain.*

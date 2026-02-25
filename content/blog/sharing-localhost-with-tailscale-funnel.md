@@ -1,3 +1,14 @@
+---
+title: Sharing Localhost With the World Using Tailscale Funnel
+description: How I stopped wrestling with ngrok and started using Tailscale to share local dev servers with clients.
+date: 2026-02-05
+published: true
+tags:
+  - devtools
+  - networking
+  - tailscale
+---
+
 # Sharing Localhost with Tailscale Funnel
 
 > Expose local dev servers with secure, public HTTPS URLs — no ngrok, no port forwarding.

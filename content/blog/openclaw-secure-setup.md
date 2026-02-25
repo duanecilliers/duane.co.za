@@ -1,3 +1,14 @@
+---
+title: "Securing Your OpenClaw Setup: Git Backups Without Leaking Secrets"
+description: How I set up automatic secret redaction for git commits and a seamless restore workflow using macOS Keychain and 1Password.
+date: 2026-02-18
+published: true
+tags:
+  - openclaw
+  - security
+  - devops
+---
+
 # Securing Your OpenClaw Setup: Git Backups Without Leaking Secrets
 
 I run [OpenClaw](https://openclaw.ai) with 14 Discord bots, a Telegram bot, and various API integrations. That's a lot of tokens floating around in config files and session transcripts. I wanted to back up my entire `~/.openclaw` directory to GitHub—but obviously couldn't push raw API keys to a repo, even a private one.
